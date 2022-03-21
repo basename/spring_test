@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="defaultStatementTimeout" value="300"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="SLF4J"/>
+    </settings>
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
+        <typeHandler handler="org.apache.ibatis.type.LocalDateTypeHandler" />
+        <typeHandler handler="org.apache.ibatis.type.LocalTimeTypeHandler" />
+    </typeHandlers>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="dialect"  value="com.github.pagehelper.PageHelper"/>
+        </plugin>
+    </plugins>
+</configuration>
