@@ -6,15 +6,16 @@ import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.NetPermission;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @SpringBootTest
@@ -280,5 +281,127 @@ class SpringbootTestApplicationTests {
             this.score = score;
         }
     }
+
+    @Test
+    void testProperties() throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileReader("src/main/resources/application.properties", StandardCharsets.UTF_8));
+
+        String property = properties.getProperty("server.port");
+
+        System.out.println(property);
+    }
+
+    @Test
+    void testSet(){
+        TreeSet<Integer> set = new TreeSet<>();
+        set.add(1);
+        set.add(5);
+        set.add(3);
+
+        System.out.println(set.size());
+
+        System.out.println(set.contains(1));
+
+        System.out.println(set);
+
+        for (Integer integer : set){
+            System.out.println(integer);
+        }
+    }
+
+    @Test
+    void testQueur(){
+        Queue<String> queue = new LinkedList<>();
+
+        queue.offer("a");
+        queue.offer("b");
+        queue.offer("c");
+
+        System.out.println(queue.poll());
+        System.out.println(queue.poll());
+
+        System.out.println(queue);
+    }
+
+    @Test
+    void testPriorityQueue(){
+        Queue<String> queue = new PriorityQueue<>();
+
+        queue.offer("apple");
+        queue.offer("pear");
+        queue.offer("banana");
+
+        System.out.println(queue.poll());
+        System.out.println(queue.poll());
+        System.out.println(queue.poll());
+    }
+
+    @Test
+    void testDuque(){
+        Deque<String> deque = new LinkedList<>();
+
+        deque.addLast("a");
+
+        deque.addLast("b");
+
+        deque.addLast("c");
+
+        System.out.println(deque);
+
+        String s = deque.removeFirst();
+        System.out.println(s);
+    }
+
+    @Test
+    void testStack(){
+        Deque<Integer> deque = new LinkedList<>();
+
+        deque.push(1);
+        deque.push(2);
+        deque.push(3);
+
+        for(;true;){
+            if (deque.size() <= 0){
+                break;
+            }
+            Integer pop = deque.pop();
+            System.out.println(pop);
+        }
+    }
+
+    @Test
+    void testIterator(){
+        List<String> arrayList = List.of("a","b");
+
+        for (String s : arrayList){
+            System.out.println(s);
+        }
+    }
+
+    @Test
+    void testShuffle(){
+        List<Integer> list = new ArrayList<>();
+
+        for (Integer i = 0;i < 15;i++){
+            list.add(i);
+        }
+
+        System.out.println(list);
+
+        Collections.shuffle(list);
+
+        System.out.println(list);
+    }
+
+    @Test
+    void testFile() throws IOException {
+        File file = new File("src/main/resources/application.properties");
+        System.out.println(file.getPath());
+        System.out.println(file.getAbsolutePath());
+        System.out.println(file.getCanonicalPath());
+        System.out.println(file.separator);
+    }
+
 
 }
