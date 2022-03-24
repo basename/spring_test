@@ -1,5 +1,6 @@
 package com.basename.controller;
 
+import com.basename.interfaces.Report;
 import com.basename.lib.ResponseData;
 import com.basename.models.dto.BookDto;
 import com.basename.models.dto.PageListDto;
