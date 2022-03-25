@@ -2,10 +2,14 @@ package com.basename;
 
 import com.basename.enums.WeekDay;
 import com.basename.models.pojo.Book;
+import com.basename.threds.*;
 import lombok.Data;
+import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -15,7 +19,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @SpringBootTest
@@ -238,8 +250,6 @@ class SpringbootTestApplicationTests {
         Students students = new Students(studentList);
 
         Integer score = students.getScore("小明");
-
-
     }
 
     class Students{
@@ -403,5 +413,150 @@ class SpringbootTestApplicationTests {
         System.out.println(file.separator);
     }
 
+    @Test
+    void testTime(){
+        Date date = new Date();
+
+        System.out.println(date.getTime());
+        System.out.println(date.getYear()+1900);
+        System.out.println(date.getMonth()+1);
+        System.out.println(date.getDate());
+
+        var sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = sdf.format(date);
+        System.out.println(format);
+
+    }
+
+    @Test
+    void testLocalDateTime(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        System.out.println(localDateTime);
+        System.out.println(localDateTime.toLocalDate());
+        System.out.println(localDateTime.toLocalTime());
+    }
+
+    @Test
+    void testDateFormat(){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+        ZonedDateTime zdt = ZonedDateTime.now();
+
+        String format = dateTimeFormatter.format(zdt);
+
+        System.out.println(format);
+    }
+
+    @Test
+    void testVar(){
+        var localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+    }
+
+    @Test
+    void testUrlEncode(){
+        String encoded = URLEncoder.encode("中文",StandardCharsets.UTF_8);
+        System.out.println(encoded);
+
+        String aaa = URLEncoder.encode("胜多负少", StandardCharsets.UTF_8);
+        System.out.println(aaa);
+    }
+
+    @Test
+    void testBase64() throws NoSuchAlgorithmException {
+        String s = "123445";
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+        md.update(s.getBytes(StandardCharsets.UTF_8));
+
+        String s1 = md.digest().toString();
+        System.out.println(s1);
+
+    }
+
+    @Test
+    void testHmac() throws NoSuchAlgorithmException {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("HamcMD5");
+
+        SecretKey key = keyGenerator.generateKey();
+
+        byte[] skey = key.getEncoded();
+
+    }
+
+    @Test
+    void testThread(){
+        TaskThred taskThred = new TaskThred();
+        taskThred.start();
+    }
+
+    @Test
+    void testRunnable(){
+
+        System.out.println("开始多线程执行任务-------");
+
+        //获取用户基本信息
+        TaskRunnable taskRunnable = new TaskRunnable();
+        Thread t = new Thread(taskRunnable);
+        t.setDaemon(true);
+        t.start();
+        taskRunnable.setRunning(false);
+
+        //获取用户扩展信息
+        TaskRunnable1 taskRunnable1 = new TaskRunnable1();
+        Thread thread = new Thread(taskRunnable1);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //合并用户信息输出
+        List<Integer> list = taskRunnable.getList();
+        List<Integer> list1 = taskRunnable1.getList();
+
+        List<Integer> totalList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Integer total = list.get(i) + list1.get(i);
+            totalList.add(total);
+        }
+
+        System.out.println(totalList);
+        System.out.println("多线程任务启动结束-------");
+    }
+
+    @Test
+    void testCounter(){
+        //启动第一个线程
+        AddTask addTask = new AddTask();
+        Thread  addThread = new Thread(addTask);
+        addThread.start();
+        try {
+            addThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //启动第二个线程
+        DesTask desTask = new DesTask();
+        Thread desThread = new Thread(desTask);
+        desThread.start();
+        try {
+            desThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(Counter.count);
+
+    }
 
 }
