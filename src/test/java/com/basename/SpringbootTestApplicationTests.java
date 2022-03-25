@@ -556,7 +556,21 @@ class SpringbootTestApplicationTests {
         }
 
         System.out.println(Counter.count);
+    }
 
+    @Test
+    void testSynchronized(){
+       QuqueTask ququeTask = new QuqueTask();
+       Thread thread = new Thread(ququeTask);
+       thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Task task = new Task();
+        System.out.println(task.getTask());
     }
 
 }
