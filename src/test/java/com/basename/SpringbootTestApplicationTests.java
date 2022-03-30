@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.print.DocFlavor;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -23,12 +24,15 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 @SpringBootTest
 class SpringbootTestApplicationTests {
@@ -571,6 +575,30 @@ class SpringbootTestApplicationTests {
 
         Task task = new Task();
         System.out.println(task.getTask());
+    }
+
+    @Test
+    void testReentrantLock(){
+        Map<String,String> map = new ConcurrentHashMap<>();
+        map.put("a","1");
+
+        System.out.println(map);
+    }
+
+    @Test
+    void testStream(){
+        Stream<Integer>  stream = Stream.of(1,2,3,4,5,6,7,8);
+
+        stream.forEach(System.out::println);
+
+        Stream<String> stream1 = Arrays.stream(new String[]{"a", "b", "c"});
+        stream1.forEach(s -> System.out.println(s));
+
+        Stream<Integer> stream2 = Stream.of(1, 2, 3, 4, 5, 6);
+        Stream<Integer> stream3 = stream2.map(n -> n * n);
+        stream3.forEach(s -> System.out.println(s));
+
+
     }
 
 }
