@@ -1,10 +1,18 @@
 package com.basename.models.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Value;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.*;
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.*;
+
 public class Book {
     private Integer id;
 
     private String type;
 
+    @JsonProperty(access = READ_ONLY)
     private String name;
 
     private String description;
