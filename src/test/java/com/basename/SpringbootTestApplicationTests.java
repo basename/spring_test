@@ -3,10 +3,14 @@ package com.basename;
 import com.basename.enums.WeekDay;
 import com.basename.models.pojo.Book;
 import com.basename.threds.*;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import lombok.Data;
 import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.reactive.GenericReactiveTransaction;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -33,6 +37,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
+
+import static com.fasterxml.jackson.core.JsonEncoding.UTF8;
 
 @SpringBootTest
 class SpringbootTestApplicationTests {
@@ -597,8 +603,195 @@ class SpringbootTestApplicationTests {
         Stream<Integer> stream2 = Stream.of(1, 2, 3, 4, 5, 6);
         Stream<Integer> stream3 = stream2.map(n -> n * n);
         stream3.forEach(s -> System.out.println(s));
+    }
 
+    @Test
+    void testJson() throws IOException {
+        JsonFactory jsonFactory = new JsonFactory();
+
+        JsonGenerator generator = jsonFactory.createGenerator(System.out, UTF8);
+        try {
+            generator.writeStartObject();
+            generator.writeStringField("name","yanzhengke");
+            generator.writeNumberField("age",18);
+
+            generator.writeEndObject();
+        } finally {
+            generator.close();
+        }
+    }
+
+    @Test
+    void testJsonRes(){
+        JsonFactory jsonFactory = new JsonFactory();
+
+        try(JsonGenerator jsonGenerator = jsonFactory.createGenerator(System.out, UTF8)){
+                jsonGenerator.writeStartObject();
+
+                jsonGenerator.writeStringField("name","yanzhengke");
+                jsonGenerator.writeNumberField("age",18);
+
+                jsonGenerator.writeEndObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
+    @Test
+    void testJson1(){
+        JsonFactory jsonFactory = new JsonFactory();
+
+            try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(System.out, UTF8)) {
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeFieldName("zhName");
+                jsonGenerator.writeEndObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
+    @Test
+    void testJson2() {
+        JsonFactory jsonFactory = new JsonFactory();
+
+        try {
+            JsonGenerator generator = jsonFactory.createGenerator(System.out, UTF8);
+
+            generator.writeStartObject();
+
+            generator.writeFieldName("chName");
+            generator.writeString("zhengke");
+
+            generator.writeFieldName("age");
+            generator.writeString("18");
+
+            generator.writeEndObject();
+            generator.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testJson3(){
+        JsonFactory jsonFactory = new JsonFactory();
+        try (JsonGenerator generator = jsonFactory.createGenerator(System.out, UTF8)){
+            generator.writeStartObject();
+
+            generator.writeFieldName("zhName");
+            generator.writeString("zhengke");
+
+            generator.writeFieldName("person");
+            generator.writeStartObject();
+            generator.writeStringField("name","yanzhengke");
+
+            generator.writeNumberField("age",18);
+            generator.writeBooleanField("isboull",false);
+
+            generator.writeEndObject();
+
+            generator.writeEndObject();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    void testJson4(){
+
+        JsonFactory jsonFactory = new JsonFactory();
+
+        try {
+            JsonGenerator jsonGenerator = jsonFactory.createGenerator(System.out,UTF8);
+
+            jsonGenerator.writeStartObject();
+
+            jsonGenerator.writeFieldName("zhName");
+            jsonGenerator.writeString("zhengke");
+
+            jsonGenerator.writeFieldName("objects");
+            jsonGenerator.writeStartArray();
+
+            jsonGenerator.writeString("yourname");
+
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeStringField("name","haohao");
+            jsonGenerator.writeEndObject();
+
+            jsonGenerator.writeEndArray();
+
+            jsonGenerator.writeEndObject();
+
+            jsonGenerator.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testJson5(){
+
+        JsonFactory jsonFactory = new JsonFactory();
+        try {
+            JsonGenerator generator = jsonFactory.createGenerator(System.out, UTF8);
+
+            //写入数据开始
+            generator.writeStartObject();
+
+            generator.writeFieldName("dags");
+            int[] ints = new int[]{1,2,3,4,56,6};
+            generator.writeArray(ints,0,ints.length - 1);
+
+            generator.writeEndObject();
+            generator.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testJson6(){
+        JsonFactory jsonFactory = new JsonFactory();
+
+        try {
+            JsonGenerator generator = jsonFactory.createGenerator(System.out, UTF8);
+
+            generator.writeStartObject();
+
+            generator.writeFieldName("success");
+            generator.writeBoolean(true);
+
+            generator.writeFieldName("myName");
+            generator.writeNull();
+
+            generator.writeEndObject();
+            generator.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testJson8(){
+        JsonFactory jsonFactory = new JsonFactory();
+        try {
+            JsonGenerator generator = jsonFactory.createGenerator(System.out, UTF8);
+
+            generator.writeStartObject();
+
+            generator.writeBooleanField("success",true);
+            generator.writeNullField("data");
+            generator.writeStringField("name","zhengke");
+            generator.writeNumberField("age",18);
+//            generator.writeArrayFieldStart();
+            generator.writeEndObject();
+            generator.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
