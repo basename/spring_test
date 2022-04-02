@@ -6,6 +6,8 @@ import com.basename.threds.*;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.ToString;
 import org.junit.jupiter.api.Test;
@@ -792,6 +794,40 @@ class SpringbootTestApplicationTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Test
+    void testJson9(){
+        JsonFactory jsonFactory = new JsonFactory();
+
+        try {
+            JsonGenerator generator = jsonFactory.createGenerator(System.out, UTF8);
+
+            generator.writeStartObject();
+
+            generator.writeRaw("{'name':'zhengke'}");
+
+            generator.writeEndObject();
+
+            generator.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    void testJson10() throws JsonProcessingException {
+        Book book = new Book();
+        book.setId(1);
+        book.setName("name");
+        book.setType("type");
+        book.setDescription("descripton");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String s = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(book);
+        System.out.println(s);
 
     }
 }
