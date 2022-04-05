@@ -1,5 +1,6 @@
 package com.basename;
 
+import com.basename.config.DatasourceConfiguration;
 import com.basename.enums.WeekDay;
 import com.basename.models.pojo.Book;
 import com.basename.threds.*;
@@ -829,5 +830,11 @@ class SpringbootTestApplicationTests {
         String s = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(book);
         System.out.println(s);
 
+    }
+
+    @Test
+    void testConfigutration(){
+        DatasourceConfiguration datasourceConfiguration = new DatasourceConfiguration();
+        System.out.println(datasourceConfiguration);
     }
 }

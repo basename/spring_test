@@ -8,7 +8,7 @@ import javax.servlet.*;
 import java.io.IOException;
 import java.util.List;
 
-@Component
+//@Component
 public class LogFilterRegistrationBean extends FilterRegistrationBean<Filter> {
 
     @PostConstruct

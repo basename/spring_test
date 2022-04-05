@@ -38,8 +38,8 @@ public class BookController {
         System.out.println(datasourceConfiguration.getPassword());
         System.out.println(datasourceConfiguration.getUserName());
 
-        boolean b = bookService.saveBook(bookDto);
-        return ResponseData.success(b);
+//        boolean b = bookService.saveBook(bookDto);
+        return ResponseData.success(bookDto);
     }
 
     /**
