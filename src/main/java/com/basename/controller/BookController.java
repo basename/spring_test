@@ -1,7 +1,7 @@
 package com.basename.controller;
 
 import com.basename.config.DatasourceConfiguration;
-import com.basename.interfaces.Report;
+import com.basename.config.MyService;
 import com.basename.lib.ResponseData;
 import com.basename.models.dto.BookDto;
 import com.basename.models.dto.PageListDto;
@@ -26,6 +26,9 @@ public class BookController {
 
     @Autowired
     private DatasourceConfiguration datasourceConfiguration;
+
+    @Autowired
+    private MyService myService;
 
     /**
      * 新增获取
