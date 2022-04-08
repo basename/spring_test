@@ -1,6 +1,7 @@
 package com.basename;
 
 import com.basename.config.DatasourceConfiguration;
+import com.basename.config.MyService;
 import com.basename.enums.WeekDay;
 import com.basename.models.pojo.Book;
 import com.basename.threds.*;
@@ -12,12 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.ToString;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.reactive.GenericReactiveTransaction;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.print.DocFlavor;
+import javax.sound.midi.Soundbank;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -33,12 +36,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 import static com.fasterxml.jackson.core.JsonEncoding.UTF8;
@@ -836,5 +841,90 @@ class SpringbootTestApplicationTests {
     void testConfigutration(){
         DatasourceConfiguration datasourceConfiguration = new DatasourceConfiguration();
         System.out.println(datasourceConfiguration);
+    }
+
+    @Test
+    void testStrSplit(){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < 10 ; i++) {
+            stringBuilder.append(i+"--");
+        }
+
+        System.out.println(stringBuilder);
+    }
+
+    @Test
+    void getLengthOfYear(){
+        int i = LocalDate.now().lengthOfYear();
+        System.out.println(i);
+
+        int i1 = LocalDate.of(2022, 1, 5).lengthOfYear();
+        System.out.println(i1);
+    }
+
+    @Test
+    void getCollectionSize(){
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+
+        if (arrayList.isEmpty()){
+            System.out.println(1);
+        }else{
+            System.out.println(2);
+        }
+    }
+
+    @Test
+    void getList(){
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        arrayList.add("a");
+        arrayList.add("b");
+        arrayList.add("c");
+
+        Iterator<String> iterator = arrayList.iterator();
+        while (iterator.hasNext()){
+            String next = iterator.next();
+            System.out.println(next);
+        }
+    }
+
+    /**
+     * javaEE
+     * spring
+     * springMVC
+     * springBoot
+     * mybatis
+     * apollo
+     * springcloud
+     * 服务注册发现：Eurka
+     * 服务间访问：restfulTemplate
+     * 负载均衡： robbin fegin
+     * 服务熔断：hystrix
+     * 网关：zuul
+     * 配置中心：springcloud-config
+     */
+    @Test
+    void getMap(){
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("a",1);
+        hashMap.put("b",2);
+        hashMap.put("c",3);
+
+        Iterator<Map.Entry<String, Integer>> iterator = hashMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String, Integer> next = iterator.next();
+            System.out.println(next.getKey());
+            System.out.println(next.getValue());
+        }
+
+    }
+
+    @Test
+    void testMyServic(){
+
     }
 }
